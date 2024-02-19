@@ -62,7 +62,6 @@ function Login() {
 
 
 
-
 function Deposit() {
   let amount = prompt("Enter the amount to deposit:");
   amount = Number(amount);
