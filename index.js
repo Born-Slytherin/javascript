@@ -23,6 +23,14 @@ function Create () {
 
 }
 
+function openLogin () {
+
+  document.getElementById("home").classList.add('hidden');
+  document.getElementById("Login").classList.remove('hidden');
+
+
+}
+
 function Submit() {
   
   account_holder.user_name = document.getElementById('user_name').value;
