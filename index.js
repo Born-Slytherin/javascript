@@ -26,8 +26,7 @@ function Create () {
 function openLogin () {
 
   document.getElementById("home").classList.add('hidden');
-  document.getElementById("Login").classList.remove('hidden');
-
+  document.getElementById("Login_screen").classList.remove('hidden');
 
 }
 
@@ -50,22 +49,7 @@ function Submit() {
 }
 
 function Login() {
-
-  document.getElementById('Login').classList.remove('hidden');
-  account_holder = localStorage.getItem('account');
-  console.log(account_holder);
-  account_holder = JSON.parse(account_holder);
-
-  let inputUserName = document.getElementById('login_user_name').value;
-  let inputPassword = document.getElementById('login_pwd').value;
-
-  if (inputUserName === account_holder.user_name && inputPassword === account_holder.password) {
-    localStorage.setItem('logged_in', true);
-    document.getElementById('Login_btn').classList.add('hidden');
-  } else {
-    alert('Invalid username or password');
-  }
-
+  
 }
 
 
