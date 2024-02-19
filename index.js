@@ -1,123 +1,104 @@
-// let a = 10;
-// let b = 2;
+let account_holder = {
+  user_name: '',
+  password: '',
+  name: '',
+  acc_no: '',
+  ifsc: '' ,
+  branch: '',
+  balance: 0,
+  transaction_history: [],
+};
 
-// if (a == b ){
-//     console.log(" a == b");
-// }else if (a < b) {
-//     console.log(" a less than b");
-// }else {
-//     console.log("a greater than b");
-// }
+function update_localstorage() {
 
-// let c = 5;
+  let local_holder = JSON.stringify(account_holder);
+  localStorage.setItem("account", local_holder);
 
-// if ( a < b && a < c) {
-//     console.log("a is smallest");
-// }else if ( b < c) {
-//     console.log("b is smallest");
-// }else {
-//     console.log("c is smallest");
-// }
+}
 
-// Switch
-// let k = prompt("Enter the day number:");    
-// k = Number(k); 
-// switch (k) {
-//     case 1 : console.log ("Sunday");
-//              break;
-//     case 2 : console.log ("Monday");
-//              break;
-//     case 3 : console.log ("Tuesday");
-//              break;
-//     case 4 : console.log ("Wednesday");
-//              break;
-//     case 5 : console.log ("Thursday");
-//              break;
-//     case 6 : console.log ("Friday");
-//              break;
-//     case 7 : console.log ("Saturday");
-//              break;
-//     default : console.log ("Invalid");
-// }
+function Create () {
+  
+  document.getElementById("home").classList.add('hidden');
+  document.getElementById("create").classList.remove('hidden');
 
-// For loop
-// for(let i=1 ; i<=10 ; i++){
-//     console.log(i);
-// }
+}
 
-// While loop
-// let i = 1;
-// while (i <= 10) {
-//     console.log(i);
-//     i++;
-// }
+function Submit() {
+  
+  account_holder.user_name = document.getElementById('user_name').value;
+  account_holder.password = document.getElementById('password').value;
+  account_holder.name = document.getElementById('name').value;
+  account_holder.acc_no = document.getElementById('acc_no').value;
+  account_holder.ifsc = document.getElementById('ifsc').value;
+  account_holder.branch = document.getElementById('branch').value;
+ 
+  update_localstorage();
 
-// Do while
-//  let i = 1;
-//  do {
-//     console.log(i);
-//     i++;
-//  }while(i<=10);
+  document.getElementById("home").classList.remove('hidden');
+  document.getElementById("create").classList.add('hidden');
+  document.getElementById("Create_btn").classList.add('hidden');
+  document.getElementById("login_btn").classList.remove('hidden');
 
-let balance = 1000;
-let choice = 0;
-let transaction_history = ["starting from "+ balance];
+}
 
-let d = new Date();
-let day = d.getDate();
-let month = d.getMonth() + 1;
-let year =d.getFullYear();
+function Login() {
 
-let date = day+"/"+month+"/"+year;
+  document.getElementById('Login').classList.remove('hidden');
+  account_holder = localStorage.getItem('account');
+  console.log(account_holder);
+  account_holder = JSON.parse(account_holder);
 
-let hour = d.getHours();
-let min = d.getMinutes();
-let sec = d.getSeconds();
+  let inputUserName = document.getElementById('login_user_name').value;
+  let inputPassword = document.getElementById('login_pwd').value;
 
-let time = hour+'-'+min+'-'+sec;
+  if (inputUserName === account_holder.user_name && inputPassword === account_holder.password) {
+    localStorage.setItem('logged_in', true);
+    document.getElementById('Login_btn').classList.add('hidden');
+  } else {
+    alert('Invalid username or password');
+  }
 
-do {
-    choice = prompt("--Welcome to ATM-- \n 1.Deposit \n 2.Withdraw \n 3.Balance \n 0.Exit \n Enter your choice:")
-    choice = Number(choice)
+}
 
-    switch(choice) {
-        case 1 : Deposit()
-                 break;
-        case 2 : Withdraw()
-                 break;
-        case 3 : Balance(balance)
-                 break;
-        case 0 : console.log("Exiting...")
-                 break;
-        default: console.log("Invalid Choice..Try again.")
-    }
 
-    if(choice == 0){
-        break;
-    }
 
-} while(choice != 0)
 
 function Deposit() {
-    let amount = prompt("Enter the amount to deposit:")
-    amount = Number(amount)
-    transaction_history.push('added '+amount+' at '+date+' in '+time)
-    balance = balance + amount;
-    console.log("Amount added to balance!")
-    Balance(balance)
-    console.log(transaction_history);
+  let amount = prompt("Enter the amount to deposit:");
+  amount = Number(amount);
+  account_holder.transaction_history.push({
+    type_of_transaction: "Deposited",
+    date: new Date(),
+    amount: amount,
+  });
+  console.log("Amount added to balance!");
+  account_holder.balance = account_holder.balance + amount;
+  console.log(account_holder.transaction_history);
+  update_localstorage();
 }
 
 function Withdraw() {
-    let amount = prompt("Enter the amount to withdraw:")
-    amount = Number(amount)
-    transaction_history.push(`subtracted ${amount} at ${date}`)
-    balance = balance -  amount;
-    console.log("Amount withdrawn!")
-    Balance(balance)
-    console.log(transaction_history);
+  let amount = prompt("Enter the amount to withdraw:");
+  amount = Number(amount);
+  if (account_holder.balance - amount < 0) {
+    console.log(`Negative Balance! ${amount} cannot be withdrawn!`);
+  } else {
+    account_holder.transaction_history.push({
+      type_of_transaction: "Withdrawed",
+      date: new Date(),
+      amount: amount,
+    });
+    console.log("Amount subtracted from balance!");
+    account_holder.balance = account_holder.balance - amount;
+    console.log(account_holder.transaction_history);
+  }
+}
+function Balance() {
+  console.log(account_holder.balance);
 }
 
-function Balance(balance) {
-    console.log("New Balance = ", balance);
+function ViewAccount() {
+  console.log(account_holder);
 }
+
+
